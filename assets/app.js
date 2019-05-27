@@ -30,7 +30,6 @@ $(document).ready(function() {
         destination: tdestination,
         firstTrain: tfirstTrain,
         frequency: tfrequency        
-        //dateAdded: firebase.database.ServerValue.TIMESTAMP
     };
     //push to firebase
     database.ref().push(newTrain);
@@ -68,18 +67,39 @@ $(document).ready(function() {
     //format the time for the trains
     var firstTrainFormat = moment.unix(tfirstTrain).format("HH:mm");
 
-    //calculate the next arrival
-    var tnext; //moment.diff()
+    //first train pushed 1 year so its before current time
+    var firstTime = moment(tfirstTrain, "HH:mm").subtract(1, "years");
+    console.log(firstTime);
+
+    //current time
+    var currentTime = moment();
+    console.log("CURRENT TIME: " + moment(currentTime).format("HH:mm"));
+
+    //difference between the times
+    var diffTime = moment().diff(moment(firstTime), "minutes");
+    console.log("DIFFERENCE IN TIME: " + diffTime);
+
+    //time apart
+    var remainder = diffTime % tfrequency;
+    console.log(remainder);
 
     //calculate the minutes away
-    var tminutes;
+    var tminutes = tfrequency - remainder;
+    console.log("MINUTES TILL TRAIN: " + tminutes);
+    
+    //calculate the next arrival
+    var tnext = moment().add(tminutes, "minutes");
+    console.log("ARRIVAL TIME: " + moment(tnext).format("HH:mm"));
+    var formattedTime = moment(tnext).format("HH:mm");
+
+    
 
     //create the new row
     var newTrainRow = $("<tr>").append(
       $("<td>").text(tname),
       $("<td>").text(tdestination),
       $("<td>").text(tfrequency),
-      $("<td>").text(tnext),
+      $("<td>").text(formattedTime),
       $("<td>").text(tminutes)
     );
 

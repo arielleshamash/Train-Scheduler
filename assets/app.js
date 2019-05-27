@@ -66,7 +66,7 @@ $(document).ready(function() {
     console.log(tfrequency);
 
     //format the time for the trains
-    var firstTrainFormat = moment.unix(firstTrain).format("HH:mm");
+    var firstTrainFormat = moment.unix(tfirstTrain).format("HH:mm");
 
     //calculate the next arrival
     var tnext; //moment.diff()
